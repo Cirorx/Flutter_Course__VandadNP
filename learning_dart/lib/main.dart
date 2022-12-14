@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 const age = 22;
-
+const name = 'ciro';
 String retornarNombres(String n1, String n2) {
   return '$n1 $n2';
 }
