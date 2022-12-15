@@ -1,9 +1,20 @@
 import 'package:flutter/material.dart';
 
-const age = 22;
-const name = 'ciro';
-String retornarNombres(String n1, String n2) {
-  return '$n1 $n2';
+void test() {
+  var listOfObjects = ['Charlie', 'Peter', 1];
+  var setOfObjects = {'Charlie', 'Peter', 1};
+  //They are differents, let's check what is unique of each one of them
+  listOfObjects.add('Charlie');
+  listOfObjects.add('Sophie');
+  listOfObjects.add(1);
+  print(
+      'This is the list $listOfObjects'); //[Charlie, Peter, 1, Charlie, Sophie, 1]
+  setOfObjects.add('Charlie');
+  setOfObjects.add('Charlie');
+  setOfObjects.add('Sophie');
+  setOfObjects.add(1);
+
+  print('This is the set $setOfObjects'); //{Charlie, Peter, 1, Sophie}
 }
 
 void main() {
@@ -16,7 +27,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    print(retornarNombres('Ciro', 'Gronrroz'));
+    test();
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
