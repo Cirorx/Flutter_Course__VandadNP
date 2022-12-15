@@ -1,20 +1,29 @@
 import 'package:flutter/material.dart';
 
 void test() {
-  var listOfObjects = ['Charlie', 'Peter', 1];
-  var setOfObjects = {'Charlie', 'Peter', 1};
-  //They are differents, let's check what is unique of each one of them
-  listOfObjects.add('Charlie');
-  listOfObjects.add('Sophie');
-  listOfObjects.add(1);
-  print(
-      'This is the list $listOfObjects'); //[Charlie, Peter, 1, Charlie, Sophie, 1]
-  setOfObjects.add('Charlie');
-  setOfObjects.add('Charlie');
-  setOfObjects.add('Sophie');
-  setOfObjects.add(1);
+  String? name = null; //nullable variable
+  List<String>? nullableList = null;
+  List<String?> notNullableList = ['peter', null];
 
-  print('This is the set $setOfObjects'); //{Charlie, Peter, 1, Sophie}
+  //Useful operators ?? and ??=
+  String nameNotNull = 'not null';
+  //name was null, so it will assing nameNotNull
+  name ??= nameNotNull;
+  print(name);
+
+  //continue on 35  and get doc links
+}
+
+// Slightly longer version uses ?: operator.
+String playerName(String? name) => name != null ? name : 'Guest1';
+
+// Very long version uses if-else statement.
+String playerNameLong(String? name) {
+  if (name != null) {
+    return name;
+  } else {
+    return 'Guest2';
+  }
 }
 
 void main() {
@@ -28,6 +37,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     test();
+    print(playerName(null));
+    print(playerNameLong(null));
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
