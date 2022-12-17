@@ -1,29 +1,67 @@
 import 'package:flutter/material.dart';
 
-class Cat extends Object {
+class Cat {
   final String name;
   Cat(this.name);
+}
 
-  @override
-  bool operator ==(covariant Cat other) => other.name == name;
+extension Run on Cat {
+  void run() {
+    print('Cat $name is running.');
+  }
+}
 
-  @override
-  int get hashCode => name.hashCode;
+Future<int> delayedCalculus(int a) =>
+    Future.delayed(const Duration(seconds: 3), () => a * 2);
+
+///Future documentarion:
+/// https://dart.dev/codelabs/async-await
+///
+
+Stream<String> getName() {
+  return Stream.periodic(const Duration(seconds: 1), (value) {
+    return 'Foo';
+  });
+}
+
+Iterable<int> getNumbers() sync* {
+  yield 1;
+  yield 3;
+  yield 5;
+}
+
+class Pair<A, B> {
+  final A value1;
+  final B value2;
+  Pair(this.value1, this.value2);
 }
 
 void test() {
-  final cat1 = Cat('milo');
-  final cat2 = Cat('milo');
+  // final meow = Cat('Milo');
+  // meow.run();
 
-  if (cat1 == cat2) print('They are equal');
-  //This is because we override the operator
+  // final result = await delayedCalculus(5);
+  // print(result);
 
-  /*Documentation
-  Factory Constructors: https://dart.dev/guides/language/language-tour#factory-constructors
-    Explanation: https://stackoverflow.com/questions/53886304/understanding-factory-constructor-code-example-dart
-
-  Overriding operators: https://www.geeksforgeeks.org/operator-overloading-in-dart/
+  //Using streams
+  /*
+  await for (final value in getName()) {
+    print(value);
+  }
+  print("Stream finished working");
   */
+
+  //Using iterables
+  /*
+  for (final value in getNumbers()) {
+    print(value);
+  }
+  */
+
+  //Taking advantage about generics
+  final person = Pair('Foo', 22);
+  //We are assigning a String and an Integer to value1 and value2
+  print(person.value1 + ' ' + person.value2.toString());
 }
 
 void main() {
