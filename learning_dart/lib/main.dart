@@ -1,29 +1,29 @@
 import 'package:flutter/material.dart';
 
-void test() {
-  String? name = null; //nullable variable
-  List<String>? nullableList = null;
-  List<String?> notNullableList = ['peter', null];
+class Cat extends Object {
+  final String name;
+  Cat(this.name);
 
-  //Useful operators ?? and ??=
-  String nameNotNull = 'not null';
-  //name was null, so it will assing nameNotNull
-  name ??= nameNotNull;
-  print(name);
+  @override
+  bool operator ==(covariant Cat other) => other.name == name;
 
-  //continue on 35  and get doc links
+  @override
+  int get hashCode => name.hashCode;
 }
 
-// Slightly longer version uses ?: operator.
-String playerName(String? name) => name != null ? name : 'Guest1';
+void test() {
+  final cat1 = Cat('milo');
+  final cat2 = Cat('milo');
 
-// Very long version uses if-else statement.
-String playerNameLong(String? name) {
-  if (name != null) {
-    return name;
-  } else {
-    return 'Guest2';
-  }
+  if (cat1 == cat2) print('They are equal');
+  //This is because we override the operator
+
+  /*Documentation
+  Factory Constructors: https://dart.dev/guides/language/language-tour#factory-constructors
+    Explanation: https://stackoverflow.com/questions/53886304/understanding-factory-constructor-code-example-dart
+
+  Overriding operators: https://www.geeksforgeeks.org/operator-overloading-in-dart/
+  */
 }
 
 void main() {
@@ -37,8 +37,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     test();
-    print(playerName(null));
-    print(playerNameLong(null));
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
