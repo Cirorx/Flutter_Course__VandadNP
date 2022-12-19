@@ -1,68 +1,25 @@
 import 'package:flutter/material.dart';
 
-class Cat {
-  final String name;
-  Cat(this.name);
-}
+void test() {}
 
-extension Run on Cat {
-  void run() {
-    print('Cat $name is running.');
-  }
-}
+/*
+  Using "flutter create --org xxx.domain appname" to create a project with and org
+  code . to open vscode on the project
+  
+  pubspec.yaml contains a lot of info on the project
 
-Future<int> delayedCalculus(int a) =>
-    Future.delayed(const Duration(seconds: 3), () => a * 2);
+  FireBase is like a server from Google, and we need to add the dependencies
+  
+  on pub.dev/packackes you can search on firebase.
 
-///Future documentarion:
-/// https://dart.dev/codelabs/async-await
-///
+  Instead of adding the dependencies on the pubspec dependencies section, 
+  we open up the consolse and write:
 
-Stream<String> getName() {
-  return Stream.periodic(const Duration(seconds: 1), (value) {
-    return 'Foo';
-  });
-}
-
-Iterable<int> getNumbers() sync* {
-  yield 1;
-  yield 3;
-  yield 5;
-}
-
-class Pair<A, B> {
-  final A value1;
-  final B value2;
-  Pair(this.value1, this.value2);
-}
-
-void test() {
-  // final meow = Cat('Milo');
-  // meow.run();
-
-  // final result = await delayedCalculus(5);
-  // print(result);
-
-  //Using streams
-  /*
-  await for (final value in getName()) {
-    print(value);
-  }
-  print("Stream finished working");
+  flutter pub add firebase_core
+  "" firebase_auth
+  "" cloud_firestore
+  "" firebase_analytics
   */
-
-  //Using iterables
-  /*
-  for (final value in getNumbers()) {
-    print(value);
-  }
-  */
-
-  //Taking advantage about generics
-  final person = Pair('Foo', 22);
-  //We are assigning a String and an Integer to value1 and value2
-  print(person.value1 + ' ' + person.value2.toString());
-}
 
 void main() {
   runApp(const MyApp());
