@@ -2,25 +2,6 @@ import 'package:flutter/material.dart';
 
 void test() {}
 
-/*
-  Using "flutter create --org xxx.domain appname" to create a project with and org
-  code . to open vscode on the project
-  
-  pubspec.yaml contains a lot of info on the project
-
-  FireBase is like a server from Google, and we need to add the dependencies
-  
-  on pub.dev/packackes you can search on firebase.
-
-  Instead of adding the dependencies on the pubspec dependencies section, 
-  we open up the consolse and write:
-
-  flutter pub add firebase_core
-  "" firebase_auth
-  "" cloud_firestore
-  "" firebase_analytics
-  */
-
 void main() {
   runApp(const MyApp());
 }
@@ -44,7 +25,7 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.blueGrey,
+        primarySwatch: Colors.red,
       ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
