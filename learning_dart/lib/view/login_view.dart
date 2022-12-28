@@ -1,30 +1,18 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:learning_dart/view/login_view.dart';
-import 'firebase_options.dart';
+import '../firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 
-void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-  runApp(
-    MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.indigo,
-      ),
-      home: const LoginView(),
-    ),
-  );
-}
-
-class RegisterView extends StatefulWidget {
-  const RegisterView({super.key});
+class LoginView extends StatefulWidget {
+  const LoginView({super.key});
 
   @override
-  State<RegisterView> createState() => _RegisterViewState();
+  State<LoginView> createState() => _LoginViewState();
 }
 
-class _RegisterViewState extends State<RegisterView> {
+class _LoginViewState extends State<LoginView> {
   late final TextEditingController _email;
   late final TextEditingController _password;
 
@@ -46,7 +34,7 @@ class _RegisterViewState extends State<RegisterView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Register"),
+        title: const Text("Login"),
       ),
       body: FutureBuilder(
           future: Firebase.initializeApp(
@@ -78,20 +66,18 @@ class _RegisterViewState extends State<RegisterView> {
 
                         try {
                           final userCredential = await FirebaseAuth.instance
-                              .createUserWithEmailAndPassword(
+                              .signInWithEmailAndPassword(
                                   email: email, password: password);
                           print(userCredential);
                         } on FirebaseAuthException catch (e) {
-                          if (e.code == "weak-password") {
-                            print("Weak passoword.");
-                          } else if (e.code == "email-already-in-use") {
-                            print("Email is already in use.");
-                          } else if (e.code == "invalid-email") {
-                            print("Invalid email was entered.");
+                          if (e.code == "user-not-found")
+                            print("User not found.");
+                          else if (e.code == "wrong-password") {
+                            print("Wrong passoword.");
                           }
                         }
                       },
-                      child: const Text("Register"),
+                      child: const Text("Login"),
                     )
                   ],
                 );
