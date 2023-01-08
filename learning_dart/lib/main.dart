@@ -14,7 +14,7 @@ void main() {
     MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.lightBlue,
+        primarySwatch: Colors.indigo,
       ),
       home: const HomePage(),
       routes: {
