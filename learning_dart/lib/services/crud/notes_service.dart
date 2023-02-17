@@ -89,20 +89,6 @@ class NotesService {
   USER FUNCTIONS
   */
 
-  //GET OR CREATE USER
-  //this will allows us to create or get a user upong loggin in with firebase
-  Future<DatabaseUser> getOrCreateUser({required String email}) async {
-    try {
-      final user = await getUser(email: email);
-      return user;
-    } on CouldNotFindUser {
-      final createdUser = await createUser(email: email);
-      return createdUser;
-    } catch (e) {
-      rethrow;
-    }
-  }
-
   //CREATE USER
   Future<DatabaseUser> createUser({required String email}) async {
     await _ensureDbIsOpen();
@@ -140,6 +126,20 @@ class NotesService {
 
     if (deletedCount != 1) {
       throw CouldNotDeleteUser();
+    }
+  }
+
+  //GET OR CREATE USER
+  //this will allows us to create or get a user upong loggin in with firebase
+  Future<DatabaseUser> getOrCreateUser({required String email}) async {
+    try {
+      final user = await getUser(email: email);
+      return user;
+    } on CouldNotFindUser {
+      final createdUser = await createUser(email: email);
+      return createdUser;
+    } catch (e) {
+      rethrow;
     }
   }
 
@@ -239,7 +239,7 @@ class NotesService {
     await _ensureDbIsOpen();
     final db = _getDatabaseOrThrow();
     final notes = await db.query(
-      userTable,
+      noteTable,
       limit: 1,
       where: "id = ?",
       whereArgs: [id],
@@ -303,7 +303,7 @@ class DatabaseUser {
 
   //we are going to compare our object only with a DatabaseUser instance
   @override
-  bool operator ==(covariant DatabaseUser other);
+  bool operator ==(covariant DatabaseUser other) => id == other.id;
 
   @override
   int get hashCode => id.hashCode;
