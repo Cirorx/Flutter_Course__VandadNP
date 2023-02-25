@@ -4,8 +4,9 @@ import 'package:learning_dart/services/auth/auth_service.dart';
 import 'package:learning_dart/views/notes/notes_view.dart';
 import 'package:learning_dart/views/register_view.dart';
 import 'package:learning_dart/views/verify_email_view.dart';
+import 'views/animations/loading_square.dart';
 import 'views/login_view.dart';
-import 'views/notes/new_note_view.dart';
+import 'views/notes/create_update_note_view.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,7 +22,7 @@ void main() {
         loginRoute: (context) => const LoginView(),
         registerRoute: (context) => const RegisterView(),
         verifyEmailRoute: (context) => const VerifiyEmailView(),
-        newNoteRoute: (context) => const NewNoteView()
+        createUpdateNoteRoute: (context) => const CreateUpdateNoteView()
       },
     ),
   );
@@ -51,7 +52,7 @@ class HomePage extends StatelessWidget {
             }
 
           default:
-            return const CircularProgressIndicator();
+            return const AnimatedSquare();
         }
       },
     );
