@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
+import 'package:learning_dart/extensions/list/filter.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' show join;
@@ -7,6 +8,24 @@ import '../../constants/database_structure.dart';
 import 'crud_exceptions.dart';
 
 class NotesService {
+  Database? _db;
+  List<DatabaseNote> _notes = [];
+  DatabaseUser? _user;
+
+  //Use broadcast so that you can have multiple listeners
+  late final StreamController<List<DatabaseNote>> _notesStreamController;
+
+  //Get all the notes from a user
+  Stream<List<DatabaseNote>> get allNotes =>
+      _notesStreamController.stream.filter((note) {
+        final currentUser = _user;
+        if (currentUser != null) {
+          return note.userId == currentUser.id;
+        } else {
+          throw UserShouldBeSetBeforeReadingAllNotes();
+        }
+      });
+
   static final NotesService _shared = NotesService._sharedInstance();
   NotesService._sharedInstance() {
     _notesStreamController =
@@ -14,17 +33,8 @@ class NotesService {
       _notesStreamController.sink.add(_notes);
     });
   }
+
   factory NotesService() => _shared;
-
-  Database? _db;
-
-  List<DatabaseNote> _notes = [];
-
-  //Use broadcast so that you can have multiple listeners
-  late final StreamController<List<DatabaseNote>> _notesStreamController;
-
-  //Get all the notes from a user
-  Stream<List<DatabaseNote>> get allNotes => _notesStreamController.stream;
 
   //Reading and caching notes
   Future<void> _cacheNotes() async {
@@ -130,13 +140,22 @@ class NotesService {
   }
 
   //GET OR CREATE USER
-  //this will allows us to create or get a user upong loggin in with firebase
-  Future<DatabaseUser> getOrCreateUser({required String email}) async {
+  //this will allows us to create or get a user uppon loggin in with firebase
+  Future<DatabaseUser> getOrCreateUser({
+    required String email,
+    bool setAsCurrentUser = true,
+  }) async {
     try {
       final user = await getUser(email: email);
+      if (setAsCurrentUser) {
+        _user = user;
+      }
       return user;
     } on CouldNotFindUser {
       final createdUser = await createUser(email: email);
+      if (setAsCurrentUser) {
+        _user = createdUser;
+      }
       return createdUser;
     } catch (e) {
       rethrow;
@@ -266,10 +285,15 @@ class NotesService {
     await getNote(id: note.id);
 
     //update db
-    final updatesCounts = await db.update(noteTable, {
-      textColumn: text,
-      isSyncedWithCloudColumn: 0,
-    });
+    final updatesCounts = await db.update(
+      noteTable,
+      {
+        textColumn: text,
+        isSyncedWithCloudColumn: 0,
+      },
+      where: "id = ?",
+      whereArgs: [note.id],
+    );
 
     if (updatesCounts == 0) {
       throw CouldNotUpdateNote();
