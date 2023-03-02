@@ -1,14 +1,14 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 
-class AnimatedSquare extends StatefulWidget {
-  const AnimatedSquare({Key? key}) : super(key: key);
+class AnimatedSquareView extends StatefulWidget {
+  const AnimatedSquareView({Key? key}) : super(key: key);
 
   @override
-  State<AnimatedSquare> createState() => _AnimatedSquareState();
+  State<AnimatedSquareView> createState() => _AnimatedSquareViewState();
 }
 
-class _AnimatedSquareState extends State<AnimatedSquare>
+class _AnimatedSquareViewState extends State<AnimatedSquareView>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
