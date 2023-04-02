@@ -3,7 +3,7 @@ import 'package:learning_dart/firebase_options.dart';
 import 'package:learning_dart/services/auth/auth_user.dart';
 import 'package:learning_dart/services/auth/auth_exceptions.dart';
 import 'package:learning_dart/services/auth/auth_provider.dart';
-
+import 'dart:developer' as devtools show log;
 import 'package:firebase_auth/firebase_auth.dart'
     show FirebaseAuth, FirebaseAuthException;
 
@@ -61,6 +61,7 @@ class FirebaseAuthProvider implements AuthProvider {
     required String password,
   }) async {
     try {
+      devtools.log("Im in logIn ");
       FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email,
         password: password,
@@ -73,15 +74,17 @@ class FirebaseAuthProvider implements AuthProvider {
         throw UserNotLoggedInAuthException();
       }
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
+      devtools.log("Error code is " + e.code);
+      if (e.code == 'firebase_auth/user-not-found') {
+        devtools.log("1st user not found");
         throw UserNotFoundAuthException();
-      } else if (e.code == 'wrong-password') {
+      } else if (e.code == 'user-not-found') {
+        throw UserNotFoundAuthException();
+      } else if (e.code == 'firebase_auth/wrong-password') {
         throw WrongPasswordAuthException();
       } else {
         throw GenericAuthException();
       }
-    } catch (_) {
-      throw GenericAuthException();
     }
   }
 
@@ -102,6 +105,24 @@ class FirebaseAuthProvider implements AuthProvider {
       await user.sendEmailVerification();
     } else {
       throw UserNotLoggedInAuthException();
+    }
+  }
+
+  @override
+  Future<void> sendPasswordReset({required String toEmail}) async {
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: toEmail);
+    } on FirebaseAuthException catch (e) {
+      switch (e.code) {
+        case "firebase_auth/invalid-email":
+          throw InvalidEmailAuthException();
+        case "firebase_auth/user-not-found":
+          throw UserNotFoundAuthException();
+        default:
+          throw GenericAuthException();
+      }
+    } catch (_) {
+      throw GenericAuthException();
     }
   }
 }
